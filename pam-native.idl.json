@@ -1,0 +1,1 @@
+{"$schema":"vendor/pushinbr/pam-native-plugin-kit/resources/pam-native.idl.schema.json","version":1,"namespace":"Pam.LiveActivities","enums":{"LiveActivityState":{"Active":1,"Ended":2,"Dismissed":3,"Stale":4}},"records":{"LiveActivityContent":{"title":"string","status":"string","progress":"float","deepLink":"string"}}}
