@@ -1,69 +1,37 @@
-<!-- pam:product-page:start -->
 <div align="center">
 
-# PAM Native Live Activities
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/banner-dark.svg">
+  <img src=".github/assets/banner-light.svg" width="880" alt="pam-native-live-activities: ActivityKit Live Activities and Android ongoing live notifications for PAM Native.">
+</picture>
 
-**Keep time-sensitive experiences visible beyond the app window.**
+**Live status on the lock screen from one typed state model.**<br>
+Drive ActivityKit Live Activities, the Dynamic Island and Android ongoing live notifications from PHP.
 
-Drive ActivityKit Live Activities and Android ongoing live notifications from one typed state model.
+[![Packagist](https://img.shields.io/packagist/v/pushinbr/pam-native-live-activities?label=packagist&color=f53003)](https://packagist.org/packages/pushinbr/pam-native-live-activities)
+[![Latest release](https://img.shields.io/github/v/release/push-in/pam-native-live-activities?label=release&color=e3a008)](https://github.com/push-in/pam-native-live-activities/releases/latest)
+![PHP 8.5](https://img.shields.io/badge/php-8.5-777bb4)
+[![CI](https://img.shields.io/github/actions/workflow/status/push-in/pam-native-live-activities/ci.yml?branch=main&label=ci)](https://github.com/push-in/pam-native-live-activities/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/push-in/pam-native-live-activities?color=1f6feb)](LICENSE)
 
-[![Latest version](https://img.shields.io/packagist/v/pushinbr/pam-native-live-activities?style=flat-square&label=stable)](https://packagist.org/packages/pushinbr/pam-native-live-activities)
-[![CI](https://img.shields.io/github/actions/workflow/status/push-in/pam-native-live-activities/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/push-in/pam-native-live-activities/actions)
-![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?style=flat-square&logo=php&logoColor=white)
-![Android](https://img.shields.io/badge/Android-API%2026%2B-3DDC84?style=flat-square&logo=android&logoColor=white)
-![iOS](https://img.shields.io/badge/iOS-15%2B-000000?style=flat-square&logo=apple&logoColor=white)
-
-**[Documentation](https://push-in.github.io/pam-docs/native/overview/) · [Quick start](#quick-start) · [What you can build](#what-you-can-build) · [PAM ecosystem](https://push-in.github.io/pam-docs/ecosystem/) · [Issues](https://github.com/push-in/pam-native-live-activities/issues)**
+[Install](#install) · [Quick example](#quick-example) · [Platforms](#platform-support) · [Permissions](#requirements) · [Reference](docs/reference.md) · [Issues](https://github.com/push-in/pam-native-live-activities/issues)
 
 </div>
 
----
+<a id="install"></a>
+## <picture><img src=".github/assets/icons/terminal.svg" width="22" height="22" alt=""></picture> Install
 
-## Why PAM Native Live Activities
+Inside a PAM Native project, add only this capability:
 
-Drive ActivityKit Live Activities and Android ongoing live notifications from one typed state model. The public API is strictly typed for PHP 8.5; expensive or frame-sensitive work stays in Rust or the platform SDK instead of crossing the application boundary every frame.
-
-| | |
-| --- | --- |
-| **Best for** | A focused capability you can add to any PAM Native application |
-| **Native path** | ActivityKit · Android ongoing notifications |
-| **Application model** | Composer package + generated native integration |
-| **Design rule** | Independent module; no feed, vertical, or application template bundled |
-
-## What you can build
-
-- Sports scores and live events
-- Delivery, trip, and queue progress
-- Timers, workouts, and session status
-
-## Quick start
-
-Already have a PAM Native project? Add only this capability:
-
-```bash
+```sh
 pam composer require pushinbr/pam-native-live-activities
 pam doctor --fix
 ```
 
-New to PAM? Follow the **[five-minute PAM Native setup](https://push-in.github.io/pam-docs/native/overview/)** once, then return here. Your application stays a normal Composer project with a committed lockfile.
-<!-- pam:product-page:end -->
+The generated iOS project includes the ActivityKit extension and the Android build includes the ongoing-notification implementation. New to PAM? Create a project with `pam init my-app --template native` (see the [PAM Native overview](https://push-in.github.io/pam-docs/native/overview/)).
 
-## See it in action
-
-ActivityKit Live Activities and Dynamic Island presentation on iOS 16.2+, with an Android ongoing-notification equivalent. Supports start, update, end, deep links, progress and ActivityKit push tokens returned by `active()`.
-
-Remote ActivityKit updates require APNs token-based delivery from your server. Android 13+ requires notification permission. Avoid high-frequency updates unless the displayed value materially changes.
-
-## Install
-
-```bash
-pam add live-activities
-pam doctor
-```
-
-The generated iOS project includes the ActivityKit extension and the Android build includes the ongoing-notification implementation.
-
-## Start and update an activity
+<a id="quick-example"></a>
+## <picture><img src=".github/assets/icons/code.svg" width="22" height="22" alt=""></picture> Quick example
 
 ```php
 use Pam\Native\LiveActivities\LiveActivities;
@@ -85,25 +53,42 @@ $activities->start('order-42', $content, function (?string $identifier, ?string 
 }, pushEnabled: true);
 ```
 
-Store the returned identifier for later updates and termination. Use `active()` after process restart to reconcile the operating-system state.
+Supports start, update, end, deep links, progress and ActivityKit push tokens returned by `active()`. Store the returned identifier for later updates and termination. Use `active()` after process restart to reconcile the operating-system state.
 
+<a id="platform-support"></a>
+## <picture><img src=".github/assets/icons/grid.svg" width="22" height="22" alt=""></picture> Platform support
 
-## What installation does
+| Platform | Support | Notes |
+| --- | --- | --- |
+| Android | API 26+ | Ongoing live notification |
+| iOS | 16.2+ | ActivityKit, WidgetKit, SwiftUI; Live Activity extension `PamLiveActivities`, Dynamic Island |
+| PAM Native | 0.8.0 to < 2.0.0 | From `pam-native.plugin.json`; PHP 8.5+ |
 
-`pam add live-activities` resolves the official compatible package, performs a non-mutating Composer preflight, updates the normal `composer.json` and `composer.lock`, refreshes generated native integration when required, and leaves the project ready for `pam doctor` validation.
+<a id="requirements"></a>
+## <picture><img src=".github/assets/icons/shield.svg" width="22" height="22" alt=""></picture> Permissions and requirements
 
-Use `pam packages` to inspect availability and `pam remove live-activities` to uninstall the capability safely. Direct Composer commands are an advanced interoperability path; PAM is the supported application workflow.
-
-## API guide
-
-| API | Responsibility |
+| Platform | Declared by the plugin |
 | --- | --- |
-| `LiveActivities` | Start, update, list, and end live activities. |
-| `LiveActivityContent` | Define bounded title, status, progress, and deep-link content. |
+| Android | `android.permission.POST_NOTIFICATIONS` (request it at runtime on Android 13+) |
+| iOS | ActivityKit Live Activity extension and `ios/AppInfo.plist` |
 
-All coded states, kinds, and variants are sequential integer-backed enums. Use enum cases in application code; do not depend on raw wire numbers.
+Remote ActivityKit updates require APNs token-based delivery from your server. Avoid high-frequency updates unless the displayed value materially changes.
 
-## Production checklist
+<a id="what-you-can-build"></a>
+## <picture><img src=".github/assets/icons/sparkle.svg" width="22" height="22" alt=""></picture> What you can build
+
+- Sports scores and live events
+- Delivery, trip, and queue progress
+- Timers, workouts, and session status
+
+| | |
+| --- | --- |
+| **Native path** | ActivityKit · Android ongoing notifications |
+| **Application model** | Composer package + generated native integration |
+| **Design rule** | Independent module; no feed, vertical, or application template bundled |
+
+<a id="production-checklist"></a>
+## <picture><img src=".github/assets/icons/shield.svg" width="22" height="22" alt=""></picture> Production checklist
 
 - Persist returned identifiers and reconcile them with `active()` after restart.
 - Send remote ActivityKit updates through authenticated APNs token delivery.
@@ -111,20 +96,26 @@ All coded states, kinds, and variants are sequential integer-backed enums. Use e
 - Run `pam doctor`, `pam test`, and a signed release build on every supported platform.
 - Exercise denial, cancellation, backgrounding, process restart, and offline behavior before release.
 
-## Troubleshooting
+Platform SDKs, credentials, entitlements, physical hardware, and store configuration remain application responsibilities. Report security vulnerabilities through GitHub private vulnerability reporting, not a public issue.
 
-- **Start fails on iOS:** verify ActivityKit capability, extension, and iOS version.
-- **Android activity is absent:** request notification permission on Android 13+.
-- **Updates target nothing:** reconcile the identifier with current OS state.
-- **Native integration is stale:** run `pam doctor --fix`, rebuild the native host, and inspect the first reported diagnostic.
+<a id="docs"></a>
+## <picture><img src=".github/assets/icons/book.svg" width="22" height="22" alt=""></picture> Docs
 
-## Compatibility and support
-
-This package targets PAM Native `0.8.x`, Android API 26+, and iOS 15+ unless a platform-specific section above states a stricter requirement. Platform SDKs, credentials, entitlements, physical hardware, and store configuration remain application responsibilities.
-
-- [PAM documentation](https://push-in.github.io/pam-docs/introduction/)
+- [Reference](docs/reference.md): install details, API guide, troubleshooting
 - [PAM Native overview](https://push-in.github.io/pam-docs/native/overview/)
 - [Plugin and native capability model](https://push-in.github.io/pam-docs/native/plugins/)
+- [Changelog](CHANGELOG.md)
 - [Report an issue](https://github.com/push-in/pam-native-live-activities/issues)
 
-Security vulnerabilities should be reported through the repository security policy or GitHub private vulnerability reporting, not a public issue.
+<a id="pam-ecosystem"></a>
+## <picture><img src=".github/assets/icons/plug.svg" width="22" height="22" alt=""></picture> Part of the PAM ecosystem
+
+PAM runs PHP natively on servers, desktops and phones. This repository is one piece of it.
+
+| [**PAM**](https://github.com/push-in/pam) | [**PAM Desktop**](https://github.com/push-in/pam-desktop) | [**PAM Native**](https://github.com/push-in/pam-native) | [**Ecosystem**](https://github.com/push-in/pam#ecosystem) |
+| --- | --- | --- | --- |
+| the runtime and CLI | native desktop apps in PHP | native Android and iOS apps in PHP | every official package and plugin |
+
+<sub>Docs: [push-in.github.io/pam-docs](https://push-in.github.io/pam-docs/introduction/) · [Issues](https://github.com/push-in/pam-native-live-activities/issues)</sub>
+
+<p align="center"><sub><a href="LICENSE">Apache License 2.0</a> · Made in Brazil by Pushin</sub></p>
